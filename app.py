@@ -70,13 +70,31 @@ def register():
         
         # Validate input data
         if not username or not email or not password:
-            flash('All fields are required')
+            flash('All fields are required', 'danger')
+            return render_template('register.html')
+        
+        # Validate username length
+        if len(username) < 3 or len(username) > 20:
+            flash('Username must be between 3 and 20 characters', 'danger')
+            return render_template('register.html')
+        
+        # Validate email format
+        if '@' not in email or '.' not in email:
+            flash('Please enter a valid email address', 'danger')
+            return render_template('register.html')
+        
+        # Validate password strength
+        if len(password) < 8:
+            flash('Password must be at least 8 characters long', 'danger')
             return render_template('register.html')
         
         # Check if username or email already exists
         existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
         if existing_user:
-            flash('Username or email already exists')
+            if existing_user.username == username:
+                flash('Username already exists', 'danger')
+            else:
+                flash('Email already exists', 'danger')
             return render_template('register.html')
         
         # Create new user
@@ -93,7 +111,7 @@ def register():
         # Log in the new user
         login_user(new_user)
         
-        flash('Account created successfully!')
+        flash('Account created successfully! You are now logged in.', 'success')
         return redirect(url_for('index'))
     
     return render_template('register.html')
@@ -107,16 +125,26 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         
+        # Validate input data
+        if not username or not password:
+            flash('Both username and password are required', 'danger')
+            return render_template('login.html')
+        
         # Find the user
         user = User.query.filter_by(username=username).first()
         
         # Verify credentials
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
-            flash('Logged in successfully!')
+            flash('Logged in successfully! Welcome back.', 'success')
+            
+            # Redirect to the page the user was trying to access, or index
+            next_page = request.args.get('next')
+            if next_page and next_page.startswith('/'):
+                return redirect(next_page)
             return redirect(url_for('index'))
         else:
-            flash('Invalid username or password')
+            flash('Invalid username or password. Please try again.', 'danger')
     
     return render_template('login.html')
 
@@ -125,7 +153,7 @@ def login():
 def logout():
     """Handle user logout."""
     logout_user()
-    flash('Logged out successfully!')
+    flash('Logged out successfully!', 'success')
     return redirect(url_for('index'))
 
 @app.route('/api/chat', methods=['POST'])
