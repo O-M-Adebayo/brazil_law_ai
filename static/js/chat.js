@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     displayBotMessage(
         "Olá! I'm your Brazilian Housing Laws Assistant. How can I help you with tenant rights, " +
         "rental obligations, or housing disputes in Brazil today?",
-        []
+        [],
+        null
     );
     
     // Handle form submission
@@ -254,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
             typingIndicator.style.display = 'none';
-            displayBotMessage("Sorry, I'm having trouble connecting to my knowledge base. Please try again later.", []);
+            displayBotMessage("Sorry, I'm having trouble connecting to my knowledge base. Please try again later.", [], null);
         });
     }
     

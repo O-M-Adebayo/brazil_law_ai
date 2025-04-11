@@ -1,87 +1,147 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>My Profile - Brazilian Housing Law Assistant</title>
+<title>User Profile - Brazilian Housing Law Assistant</title>
 <style>
     .query-card {
-        margin-bottom: 1rem;
-        transition: transform 0.2s;
+        transition: all 0.2s;
     }
     .query-card:hover {
-        transform: translateY(-3px);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
-    .query-time {
+    .query-date {
         font-size: 0.8rem;
-        color: var(--bs-secondary-color);
     }
-    .empty-state {
-        text-align: center;
-        padding: 3rem 0;
+    .star-rating {
+        color: var(--bs-warning);
     }
-    .empty-state i {
-        font-size: 4rem;
-        color: var(--bs-secondary);
-        margin-bottom: 1rem;
+    .no-queries {
+        min-height: 200px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1><i class="fas fa-user-circle me-2"></i>{{ current_user.username }}'s Profile</h1>
+        <p class="lead">View and manage your account information and chat history</p>
+    </div>
+</div>
+
 <div class="row">
-    <div class="col-md-4">
-        <div class="card shadow mb-4">
+    <!-- User Info Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Profile Information</h5>
+                <h5 class="mb-0"><i class="fas fa-id-card me-2"></i>Account Information</h5>
             </div>
             <div class="card-body">
-                <div class="text-center mb-3">
-                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 100px; height: 100px;">
-                        <span style="font-size: 2.5rem;">{{ current_user.username[0].upper() }}</span>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" class="form-control" value="{{ current_user.username }}" readonly>
                     </div>
-                    <h4>{{ current_user.username }}</h4>
-                    <p class="text-secondary">{{ current_user.email }}</p>
                 </div>
-                <div class="d-grid gap-2">
-                    <a href="{{ url_for('index') }}" class="btn btn-primary">
-                        <i class="fas fa-comments me-2"></i>Back to Chat
-                    </a>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        <input type="email" class="form-control" value="{{ current_user.email }}" readonly>
+                    </div>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Account Type</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                        <input type="text" class="form-control" value="{% if current_user.is_admin %}Administrator{% else %}Standard User{% endif %}" readonly>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Total Queries</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-comments"></i></span>
+                        <input type="text" class="form-control" value="{{ chat_history|length }}" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-comments me-2"></i>Back to Chat
+                </a>
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-info mt-2">
+                    <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
     
-    <div class="col-md-8">
+    <!-- Chat History -->
+    <div class="col-md-8 mb-4">
         <div class="card shadow">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="fas fa-history me-2"></i>Chat History</h5>
-                <span class="badge bg-secondary">{{ chat_history|length }} interactions</span>
+                <span class="badge bg-secondary">{{ chat_history|length }} conversations</span>
             </div>
             <div class="card-body">
                 {% if chat_history %}
-                    {% for query in chat_history %}
-                    <div class="card query-card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-question-circle me-2"></i>Your Question</span>
-                            <span class="query-time">{{ query.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
-                        </div>
-                        <div class="card-body">
-                            <p class="mb-2"><strong>{{ query.query_text }}</strong></p>
-                            <hr>
-                            <p class="card-text">
-                                <i class="fas fa-robot me-2 text-primary"></i>
-                                {{ query.response_text }}
-                            </p>
-                        </div>
+                    <div class="row">
+                        {% for query in chat_history %}
+                            <div class="col-12 mb-3">
+                                <div class="card query-card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <span class="query-text text-primary">
+                                            <i class="fas fa-question-circle me-2"></i>{{ query.query_text }}
+                                        </span>
+                                        <span class="query-date text-muted">
+                                            {{ query.timestamp.strftime('%Y-%m-%d %H:%M') }}
+                                        </span>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="response-text small">{{ query.response_text|truncate(200) }}</p>
+                                        
+                                        {% if query.has_feedback %}
+                                            <div class="feedback-info mt-3 pt-2 border-top">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="star-rating">
+                                                        {% for i in range(5) %}
+                                                            {% if i < query.feedback_rating %}
+                                                                <i class="fas fa-star"></i>
+                                                            {% else %}
+                                                                <i class="far fa-star"></i>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                    <small class="text-muted">
+                                                        Feedback provided on {{ query.feedback_timestamp.strftime('%Y-%m-%d') }}
+                                                    </small>
+                                                </div>
+                                                {% if query.feedback_comments %}
+                                                    <div class="feedback-comments mt-2">
+                                                        <small><em>"{{ query.feedback_comments }}"</em></small>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 {% else %}
-                    <div class="empty-state">
-                        <i class="fas fa-comments"></i>
-                        <h4>No chat history yet</h4>
-                        <p class="text-secondary">Your questions and responses will appear here after you start chatting.</p>
-                        <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">
-                            <i class="fas fa-comment me-2"></i>Start Chatting
-                        </a>
+                    <div class="d-flex justify-content-center align-items-center no-queries">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-comment-slash fa-3x mb-3"></i>
+                            <h5>No Chat History Yet</h5>
+                            <p>Start a conversation with the assistant to see your history here.</p>
+                            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                                <i class="fas fa-comments me-2"></i>Start Chatting
+                            </a>
+                        </div>
                     </div>
                 {% endif %}
             </div>
