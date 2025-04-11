@@ -1,5 +1,6 @@
 import os
 import logging
+from functools import wraps
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
@@ -155,6 +156,58 @@ def logout():
     logout_user()
     flash('Logged out successfully!', 'success')
     return redirect(url_for('index'))
+
+@app.route('/profile')
+@login_required
+def profile():
+    """Display user profile and chat history."""
+    from models import ChatQuery
+    
+    # Get user's chat history, ordered by most recent
+    chat_history = ChatQuery.query.filter_by(user_id=current_user.id).order_by(ChatQuery.timestamp.desc()).all()
+    
+    return render_template('profile.html', chat_history=chat_history)
+
+def admin_required(f):
+    """Decorator for routes that require admin access."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            flash('You need admin privileges to access this page.', 'danger')
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/admin')
+@login_required
+@admin_required
+def admin_dashboard():
+    """Admin dashboard for system analytics."""
+    from models import User, ChatQuery
+    from sqlalchemy import func
+    
+    # Get basic stats
+    total_users = User.query.count()
+    total_queries = ChatQuery.query.count()
+    
+    # Get recent queries for analytics
+    recent_queries = ChatQuery.query.order_by(ChatQuery.timestamp.desc()).limit(20).all()
+    
+    # Get most active users
+    active_users = db.session.query(
+        User, func.count(ChatQuery.id).label('query_count')
+    ).join(User.queries).group_by(User).order_by(func.count(ChatQuery.id).desc()).limit(5).all()
+    
+    # Get common query terms (simplified)
+    # In a real system, you might want to use NLP or more sophisticated analysis
+    
+    return render_template(
+        'admin/dashboard.html',
+        total_users=total_users,
+        total_queries=total_queries,
+        recent_queries=recent_queries,
+        active_users=active_users
+    )
 
 @app.route('/api/chat', methods=['POST'])
 def chat():

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>My Profile - Brazilian Housing Law Assistant</title>
+<style>
+    .query-card {
+        margin-bottom: 1rem;
+        transition: transform 0.2s;
+    }
+    .query-card:hover {
+        transform: translateY(-3px);
+    }
+    .query-time {
+        font-size: 0.8rem;
+        color: var(--bs-secondary-color);
+    }
+    .empty-state {
+        text-align: center;
+        padding: 3rem 0;
+    }
+    .empty-state i {
+        font-size: 4rem;
+        color: var(--bs-secondary);
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Profile Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 100px; height: 100px;">
+                        <span style="font-size: 2.5rem;">{{ current_user.username[0].upper() }}</span>
+                    </div>
+                    <h4>{{ current_user.username }}</h4>
+                    <p class="text-secondary">{{ current_user.email }}</p>
+                </div>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <i class="fas fa-comments me-2"></i>Back to Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Chat History</h5>
+                <span class="badge bg-secondary">{{ chat_history|length }} interactions</span>
+            </div>
+            <div class="card-body">
+                {% if chat_history %}
+                    {% for query in chat_history %}
+                    <div class="card query-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-question-circle me-2"></i>Your Question</span>
+                            <span class="query-time">{{ query.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-2"><strong>{{ query.query_text }}</strong></p>
+                            <hr>
+                            <p class="card-text">
+                                <i class="fas fa-robot me-2 text-primary"></i>
+                                {{ query.response_text }}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-comments"></i>
+                        <h4>No chat history yet</h4>
+                        <p class="text-secondary">Your questions and responses will appear here after you start chatting.</p>
+                        <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-comment me-2"></i>Start Chatting
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
