@@ -1,0 +1,135 @@
+/* Custom styles that complement Bootstrap */
+
+/* Chat container styling */
+.chat-container {
+    height: 70vh;
+    border-radius: 0.5rem;
+    background-color: var(--bs-dark);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat messages area */
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* Individual message styling */
+.message {
+    margin-bottom: 1rem;
+    max-width: 80%;
+}
+
+.message-content {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+/* User message styling */
+.user-message {
+    margin-left: auto;
+}
+
+.user-message .message-content {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+/* Bot message styling */
+.bot-message {
+    margin-right: auto;
+}
+
+.bot-message .message-content {
+    background-color: var(--bs-secondary);
+    color: white;
+    display: flex;
+    gap: 10px;
+}
+
+.bot-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+/* Citations styling */
+.citations {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    border-top: 1px solid var(--bs-gray-600);
+    padding-top: 0.5rem;
+}
+
+.citations ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0;
+}
+
+.citations a {
+    color: var(--bs-info);
+    word-break: break-all;
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: none;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    background-color: var(--bs-secondary);
+    color: white;
+    border-radius: 0.5rem;
+    max-width: 80%;
+}
+
+.typing-dots {
+    display: flex;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: white;
+    border-radius: 50%;
+    animation: typing-dot-animation 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing-dot-animation {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+/* Input area styling */
+.chat-input-container {
+    padding: 1rem;
+    background-color: var(--bs-gray-900);
+    border-top: 1px solid var(--bs-gray-800);
+}
+
+/* Legal disclaimer */
+.legal-disclaimer {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 1rem;
+    color: var(--bs-gray-600);
+}
+
+/* Additional responsive adjustments */
+@media (max-width: 576px) {
+    .message {
+        max-width: 90%;
+    }
+}

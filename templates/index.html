@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<meta name="description" content="AI-powered assistant for Brazilian housing laws, tenant rights, and rental obligations">
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card bg-dark shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-comments me-2"></i>
+                    Brazilian Housing Law Chat
+                </h5>
+                <span class="badge bg-success">Online</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <!-- Messages will be added here dynamically -->
+                    </div>
+                    
+                    <!-- Typing indicator -->
+                    <div id="typing-indicator" class="typing-indicator ms-2">
+                        <div class="bot-icon me-2">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="typing-text me-2">Typing</div>
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <form id="chat-form">
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    id="user-input" 
+                                    class="form-control" 
+                                    placeholder="Ask about Brazilian housing laws..."
+                                    autocomplete="off"
+                                >
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="legal-disclaimer">
+                    <i class="fas fa-info-circle me-1"></i>
+                    <strong>Disclaimer:</strong> This chatbot provides general information about Brazilian housing laws 
+                    but does not constitute professional legal advice. For specific legal issues, 
+                    please consult with a qualified attorney.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information cards -->
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-contract fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Rental Contracts</h5>
+                        <p class="card-text">Learn about legal requirements for rental agreements in Brazil.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-shield fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Tenant Rights</h5>
+                        <p class="card-text">Understand your rights as a tenant under Brazilian law.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body text-center">
+                        <i class="fas fa-gavel fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Dispute Resolution</h5>
+                        <p class="card-text">Find information about resolving housing disputes in Brazil.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Side information -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    Popular Topics
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white-50 border-secondary" 
+                       onclick="document.getElementById('user-input').value='What are the main tenant rights in Brazil?'; return false;">
+                        What are the main tenant rights in Brazil?
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white-50 border-secondary"
+                       onclick="document.getElementById('user-input').value='How to terminate a rental contract in Brazil?'; return false;">
+                        How to terminate a rental contract in Brazil?
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white-50 border-secondary"
+                       onclick="document.getElementById('user-input').value='What documents are required for a rental agreement?'; return false;">
+                        What documents are required for a rental agreement?
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white-50 border-secondary"
+                       onclick="document.getElementById('user-input').value='Can landlords increase rent in Brazil?'; return false;">
+                        Can landlords increase rent in Brazil?
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white-50 border-secondary"
+                       onclick="document.getElementById('user-input').value='What to do if my landlord refuses to make repairs?'; return false;">
+                        What to do if my landlord refuses to make repairs?
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-dark shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-book-open me-2"></i>
+                    Key Resources
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-dark text-white-50 border-secondary">
+                        <strong>Lei do Inquilinato (Lei nº 8.245/91)</strong> - The main Brazilian Rental Law
+                    </li>
+                    <li class="list-group-item bg-dark text-white-50 border-secondary">
+                        <strong>Código Civil Brasileiro</strong> - Brazilian Civil Code (Articles 565-578)
+                    </li>
+                    <li class="list-group-item bg-dark text-white-50 border-secondary">
+                        <strong>Código de Defesa do Consumidor</strong> - Consumer Protection Code
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

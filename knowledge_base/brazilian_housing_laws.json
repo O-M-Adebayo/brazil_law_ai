@@ -1,0 +1,161 @@
+{
+  "rental_laws": {
+    "main_laws": {
+      "lei_do_inquilinato": {
+        "name": "Lei do Inquilinato (Lei nº 8.245/91)",
+        "description": "The main law governing residential and commercial rentals in Brazil.",
+        "key_provisions": [
+          "Regulates residential and commercial leases",
+          "Defines rights and obligations of landlords and tenants",
+          "Establishes procedures for eviction",
+          "Sets rules for rent adjustment"
+        ],
+        "url": "http://www.planalto.gov.br/ccivil_03/leis/l8245.htm"
+      },
+      "codigo_civil": {
+        "name": "Código Civil Brasileiro (Lei nº 10.406/2002)",
+        "description": "The Brazilian Civil Code contains general contract provisions applicable to rental agreements.",
+        "key_provisions": [
+          "Articles 565-578 specifically address leasing (locação de coisas)",
+          "Establishes general principles for contracts that apply to leases"
+        ],
+        "url": "http://www.planalto.gov.br/ccivil_03/leis/2002/l10406.htm"
+      },
+      "codigo_do_consumidor": {
+        "name": "Código de Defesa do Consumidor (Lei nº 8.078/90)",
+        "description": "The Consumer Protection Code may apply to rental relationships in certain circumstances.",
+        "url": "http://www.planalto.gov.br/ccivil_03/leis/l8078.htm"
+      }
+    }
+  },
+  "tenant_rights": {
+    "basic_rights": [
+      "Right to a habitable dwelling in good condition",
+      "Right to peaceful enjoyment of the property",
+      "Protection against arbitrary eviction",
+      "Right to have the security deposit returned at the end of the lease",
+      "Right to have maintenance and necessary repairs carried out by the landlord"
+    ],
+    "rent_adjustments": {
+      "description": "Rent can typically only be adjusted annually based on an inflation index specified in the contract.",
+      "common_indices": ["IGP-M", "IPCA", "IPC-FIPE"],
+      "restrictions": "Arbitrary increases outside of the contractual provisions are prohibited."
+    },
+    "termination": {
+      "by_tenant": {
+        "description": "A tenant can terminate a fixed-term lease before its end by paying a proportional fine.",
+        "notice_period": "Usually 30 days notice is required.",
+        "penalties": "If terminating before the end of a fixed-term contract, the tenant may have to pay a penalty, which is typically proportional to the remaining time."
+      }
+    },
+    "security_deposits": {
+      "description": "Brazilian law limits security deposits and sets rules for their return.",
+      "limit": "Typically, the security deposit should not exceed three months of rent.",
+      "return_period": "The deposit should be returned within 30 days after the end of the lease, minus any legitimate deductions."
+    }
+  },
+  "landlord_obligations": {
+    "main_duties": [
+      "Deliver the property in a habitable condition",
+      "Maintain the structural integrity of the building",
+      "Make necessary repairs (unless otherwise agreed in the contract)",
+      "Ensure peaceful use of the property",
+      "Pay property taxes (IPTU) and building fees (condomínio) unless otherwise agreed"
+    ],
+    "repairs": {
+      "description": "Landlords are responsible for structural repairs and maintenance of essential systems.",
+      "exceptions": "The contract may specify certain maintenance responsibilities to be borne by the tenant."
+    },
+    "illegal_practices": [
+      "Entering the property without notice",
+      "Cutting off utilities to force eviction",
+      "Removing the tenant's belongings without a court order",
+      "Imposing arbitrary rent increases",
+      "Refusing to make necessary repairs"
+    ]
+  },
+  "rental_contracts": {
+    "types": {
+      "fixed_term": {
+        "description": "Contract with a specified duration, typically 30 months for residential properties.",
+        "minimum_duration": "No legally mandated minimum, but 30 months is common to avoid automatic conversion to indefinite term.",
+        "renewal": "If the tenant stays beyond the end date with the landlord's consent, the contract converts to indefinite term."
+      },
+      "indefinite_term": {
+        "description": "Contract without a specified end date, continuing until either party gives notice.",
+        "termination": "Either party can terminate with 30 days notice."
+      }
+    },
+    "required_documents": {
+      "for_tenants": [
+        "RG (ID card)",
+        "CPF (tax identification number)",
+        "Proof of income (typically 3x the monthly rent)",
+        "Proof of residence",
+        "Credit check authorization"
+      ],
+      "guarantees": {
+        "description": "Brazilian law allows several types of guarantees to secure rental payment.",
+        "types": [
+          "Fiador (guarantor/co-signer)",
+          "Caução (security deposit)",
+          "Seguro-fiança (rental insurance)",
+          "Alienação fiduciária (fiduciary alienation)"
+        ]
+      }
+    },
+    "essential_clauses": [
+      "Identification of the parties",
+      "Description of the property",
+      "Duration of the lease",
+      "Rent amount and payment method",
+      "Rent adjustment index and frequency",
+      "Responsibilities for repairs and maintenance",
+      "Conditions for termination",
+      "Penalties for breach of contract"
+    ]
+  },
+  "eviction_process": {
+    "grounds": [
+      "Non-payment of rent",
+      "Breach of contract provisions",
+      "Need of the property by the owner for personal use",
+      "Demolition or substantial renovation of the property"
+    ],
+    "procedure": {
+      "description": "Eviction in Brazil typically requires a court order and follows a judicial process.",
+      "steps": [
+        "Notification of the tenant",
+        "Filing of an eviction lawsuit",
+        "Court hearing",
+        "Court order",
+        "Enforcement of the order by a court official"
+      ],
+      "timeline": "The process can take from a few months to over a year, depending on the case complexity and local court backlog."
+    },
+    "special_cases": {
+      "non_payment": {
+        "description": "Eviction for non-payment is one of the most common cases.",
+        "purge_period": "The tenant typically has 15 days to pay the debt and avoid eviction after being notified."
+      }
+    }
+  },
+  "common_disputes": {
+    "repair_issues": {
+      "description": "Disputes over who is responsible for repairs are common.",
+      "resolution": "The rental contract and the Lei do Inquilinato determine responsibility. Generally, structural repairs are the landlord's responsibility while day-to-day maintenance falls to the tenant."
+    },
+    "rent_increases": {
+      "description": "Disputes often arise over the amount or frequency of rent increases.",
+      "resolution": "Rent can only be increased according to the contract terms, typically annually based on an inflation index."
+    },
+    "security_deposit": {
+      "description": "Disputes about the return of security deposits are common.",
+      "resolution": "The landlord must justify any deductions from the deposit with evidence of damages beyond normal wear and tear."
+    },
+    "early_termination": {
+      "description": "Disagreements about penalties for early termination of contracts.",
+      "resolution": "The Lei do Inquilinato sets parameters for proportional fines, typically related to the remaining contract period."
+    }
+  }
+}
