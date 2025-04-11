@@ -1,6 +1,7 @@
 import os
 import logging
 from functools import wraps
+from datetime import datetime
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
@@ -209,6 +210,48 @@ def admin_dashboard():
         active_users=active_users
     )
 
+@app.route('/api/feedback', methods=['POST'])
+def submit_feedback():
+    """Handle feedback submission for chat responses."""
+    try:
+        data = request.json
+        query_id = data.get('query_id')
+        rating = data.get('rating')
+        comments = data.get('comments', '')
+        
+        if not query_id or not rating:
+            return jsonify({'error': 'Query ID and rating are required'}), 400
+        
+        # Validate rating (1-5)
+        try:
+            rating = int(rating)
+            if rating < 1 or rating > 5:
+                return jsonify({'error': 'Rating must be between 1 and 5'}), 400
+        except ValueError:
+            return jsonify({'error': 'Rating must be a number'}), 400
+        
+        # Get the chat query
+        from models import ChatQuery
+        query = ChatQuery.query.get(query_id)
+        
+        if not query:
+            return jsonify({'error': 'Chat query not found'}), 404
+        
+        # Update feedback
+        query.has_feedback = True
+        query.feedback_rating = rating
+        query.feedback_comments = comments
+        query.feedback_timestamp = datetime.utcnow()
+        
+        # Save to database
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': 'Feedback submitted successfully'})
+        
+    except Exception as e:
+        logger.exception("Error submitting feedback")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     """Process chat messages and return responses."""
@@ -275,7 +318,8 @@ def chat():
         
         return jsonify({
             'response': assistant_message,
-            'citations': citations
+            'citations': citations,
+            'query_id': chat_query.id  # Include the query ID for feedback
         })
         
     except Exception as e:

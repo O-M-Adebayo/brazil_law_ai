@@ -18,4 +18,9 @@ class ChatQuery(db.Model):
     query_text = db.Column(db.Text, nullable=False)
     response_text = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    feedback = db.Column(db.Boolean, nullable=True)  # User feedback on response quality
+    
+    # Feedback fields
+    has_feedback = db.Column(db.Boolean, default=False)
+    feedback_rating = db.Column(db.Integer, nullable=True)  # Rating 1-5
+    feedback_comments = db.Column(db.Text, nullable=True)  # Optional user comments
+    feedback_timestamp = db.Column(db.DateTime, nullable=True)  # When feedback was given

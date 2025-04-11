@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Admin Dashboard - Brazilian Housing Law Assistant</title>
+<style>
+    .stat-card {
+        transition: transform 0.2s;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    .stat-icon {
+        font-size: 2rem;
+        color: var(--bs-primary);
+    }
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+    .query-list {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</h1>
+        <p class="lead">System analytics and statistics for the Brazilian Housing Law Assistant</p>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card stat-card shadow h-100">
+            <div class="card-body text-center">
+                <div class="stat-icon mb-2">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-value">{{ total_users }}</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card stat-card shadow h-100">
+            <div class="card-body text-center">
+                <div class="stat-icon mb-2">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="stat-value">{{ total_queries }}</div>
+                <div class="stat-label">Total Queries</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Active Users -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-star me-2"></i>Most Active Users</h5>
+            </div>
+            <div class="card-body">
+                {% if active_users %}
+                    <div class="list-group">
+                        {% for user, query_count in active_users %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i class="fas fa-user me-2"></i>{{ user.username }}
+                                </span>
+                                <span class="badge bg-primary rounded-pill">{{ query_count }} queries</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted my-4">No active users yet</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Queries -->
+    <div class="col-md-8 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Queries</h5>
+                <span class="badge bg-secondary">{{ recent_queries|length }} shown</span>
+            </div>
+            <div class="card-body query-list">
+                {% if recent_queries %}
+                    <div class="list-group">
+                        {% for query in recent_queries %}
+                            <div class="list-group-item flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 text-primary">{{ query.query_text }}</h6>
+                                    <small class="text-muted">{{ query.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </div>
+                                <p class="mb-1"><small>{{ query.response_text|truncate(120) }}</small></p>
+                                {% if query.user %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-1"></i>{{ query.user.username }}
+                                    </small>
+                                {% else %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-user-slash me-1"></i>Anonymous User
+                                    </small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted my-4">No queries yet</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
